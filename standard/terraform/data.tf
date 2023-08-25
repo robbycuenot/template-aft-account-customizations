@@ -1,5 +1,9 @@
 data "aws_caller_identity" "current" {}
 
+data "aws_organizations_organization" "current_organization" {
+  provider = aws.ro
+}
+
 data "tfe_organization" "current_organization" {
   name = local.tfc_current_organization_name
 }

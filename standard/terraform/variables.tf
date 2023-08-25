@@ -2,6 +2,10 @@ variable "github_token" {
   description = "GitHub Token for creating account repos"
 }
 
+variable "github_owner" {
+  description = "Github Owner"
+}
+
 variable "terraform_token" {
   description = "Terraform Team Token"
 }

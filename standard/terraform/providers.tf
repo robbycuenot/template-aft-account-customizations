@@ -3,7 +3,7 @@ provider "tfe" {
 }
 
 provider "github" {
-  owner = local.github_owner
+  owner = var.github_owner
   token = var.github_token
 }
 
