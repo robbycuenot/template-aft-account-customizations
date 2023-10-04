@@ -1,5 +1,10 @@
 provider "tfe" {
-  token = var.terraform_token
+  token = var.terraform_aft_token
+}
+
+provider "tfe" {
+  alias = "workloads"
+  token = var.terraform_workloads_token
 }
 
 provider "github" {

@@ -6,8 +6,12 @@ variable "github_owner" {
   description = "Github Owner"
 }
 
-variable "terraform_token" {
-  description = "Terraform Team Token"
+variable "terraform_aft_token" {
+  description = "Terraform AFT Team Token"
+}
+
+variable "terraform_workloads_token" {
+  description = "Terraform AFT (Workloads) Team Token"
 }
 
 variable "github_installation_id" {

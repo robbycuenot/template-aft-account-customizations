@@ -7,6 +7,7 @@ resource "github_repository" "account-id-repository" {
 }
 
 resource "tfe_workspace" "workspace" {
+  provider = tfe.workloads
   name = local.account_name_and_id
   organization = data.tfe_organization.current_organization.name
   project_id = data.tfe_project.workloads.id
@@ -91,6 +92,7 @@ resource "aws_iam_role_policy_attachment" "tfc_policy_attachment" {
 
 # The following variables must be set to allow runs to authenticate to AWS.
 resource "tfe_variable" "enable_aws_provider_auth" {
+ provider = tfe.workloads
  workspace_id = tfe_workspace.workspace.id
  
  key      = "TFC_AWS_PROVIDER_AUTH"
@@ -101,6 +103,7 @@ resource "tfe_variable" "enable_aws_provider_auth" {
 }
  
 resource "tfe_variable" "tfc_aws_role_arn" {
+ provider = tfe.workloads
  workspace_id = tfe_workspace.workspace.id
  
  key      = "TFC_AWS_RUN_ROLE_ARN"
