@@ -6,11 +6,10 @@ resource "github_repository" "account-id-repository" {
   auto_init = true
 }
 
-resource "tfe_workspace" "workspace" {
+resource "tfe_workspace" "workload" {
   provider = tfe.workloads
   name = local.account_name_and_id
-  organization = data.tfe_organization.current_organization.name
-  project_id = data.tfe_project.workloads.id
+  organization = data.tfe_organization.workloads.name
   vcs_repo {
     identifier = github_repository.account-id-repository.full_name
     github_app_installation_id = var.github_installation_id
@@ -54,7 +53,7 @@ resource "aws_iam_role" "tfc_role" {
          "app.terraform.io:aud": "${one(aws_iam_openid_connect_provider.tfc_provider.client_id_list)}"
        },
        "StringLike": {
-         "app.terraform.io:sub": "organization:${data.tfe_organization.current_organization.name}:project:*:workspace:${tfe_workspace.workspace.name}:run_phase:*"
+         "app.terraform.io:sub": "organization:${data.tfe_organization.workloads.name}:project:*:workspace:${tfe_workspace.workload.name}:run_phase:*"
        }
      }
    }
@@ -93,7 +92,7 @@ resource "aws_iam_role_policy_attachment" "tfc_policy_attachment" {
 # The following variables must be set to allow runs to authenticate to AWS.
 resource "tfe_variable" "enable_aws_provider_auth" {
  provider = tfe.workloads
- workspace_id = tfe_workspace.workspace.id
+ workspace_id = tfe_workspace.workload.id
  
  key      = "TFC_AWS_PROVIDER_AUTH"
  value    = "true"
@@ -104,7 +103,7 @@ resource "tfe_variable" "enable_aws_provider_auth" {
  
 resource "tfe_variable" "tfc_aws_role_arn" {
  provider = tfe.workloads
- workspace_id = tfe_workspace.workspace.id
+ workspace_id = tfe_workspace.workload.id
  
  key      = "TFC_AWS_RUN_ROLE_ARN"
  value    = aws_iam_role.tfc_role.arn
